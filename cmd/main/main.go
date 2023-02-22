@@ -1,18 +1,24 @@
 package main
 
 import (
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/sirupsen/logrus"
 	"log"
 	"strings"
+
+	"git.foxminded.ua/foxstudent104181/telegrambot/cmd/logging"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	_ "github.com/sirupsen/logrus"
 )
 
 func main() {
+	logging.Init()
+
 	cfg := LoadConfig()
 	telegramBotToken := cfg.TelegramBotToken
 
 	bot, err := tgbotapi.NewBotAPI(telegramBotToken)
 	if err != nil {
-		log.Panic(err)
+		log.Fatalf("Error to connect to bot: %v", err)
 	}
 	bot.Debug = true
 
@@ -26,6 +32,15 @@ func main() {
 		if update.Message == nil {
 			continue
 		}
+
+		// Create a logger instance for this request
+		logger := logrus.WithFields(logrus.Fields{
+			"chat_id":  update.Message.Chat.ID,
+			"user_id":  update.Message.From.ID,
+			"username": update.Message.From.UserName,
+		})
+
+		logger.Infof("Received message: %s", update.Message.Text)
 
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 
@@ -43,11 +58,15 @@ func main() {
 		case "/links":
 			msg.Text = "You can find me on the following platforms:\n\nGitHub: https://github.com/Noskonwood\nLinkedIn: https://www.linkedin.com/in/bogdan-petrukhin/"
 		default:
+			logger.Warn("Received unknown command: %s", update.Message.Text)
 			continue
 		}
 
 		if _, err := bot.Send(msg); err != nil {
+			logger.Errorf("Failed to send message: %v", err)
 			log.Panic(err)
 		}
+
+		logger.Info("Message sent")
 	}
 }
