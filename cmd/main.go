@@ -1,19 +1,19 @@
 package main
 
 import (
+	"git.foxminded.ua/foxstudent104181/telegrambot/logger"
 	"github.com/sirupsen/logrus"
 	"log"
 	"strings"
 
-	"git.foxminded.ua/foxstudent104181/telegrambot/cmd/logging"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	_ "github.com/sirupsen/logrus"
 )
 
 func main() {
-	logging.Init()
+	logger.Init()
 
-	cfg := LoadConfig()
+	cfg := logger.LoadConfig()
 	telegramBotToken := cfg.TelegramBotToken
 
 	bot, err := tgbotapi.NewBotAPI(telegramBotToken)
@@ -64,7 +64,7 @@ func main() {
 
 		if _, err := bot.Send(msg); err != nil {
 			logger.Errorf("Failed to send message: %v", err)
-			log.Panic(err)
+			log.Fatalf("Error to send the message: %v", err)
 		}
 
 		logger.Info("Message sent")

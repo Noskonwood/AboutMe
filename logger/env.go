@@ -1,13 +1,18 @@
-package main
+package logger
 
 import (
 	"github.com/caarlos0/env/v7"
 	"github.com/joho/godotenv"
 	"log"
+	_ "os"
 )
 
 type Config struct {
 	TelegramBotToken string `env:"API_KEY,required"`
+	LogLevel         string `env:"LOG_LEVEL"`
+	LogServer        string `env:"LOG_SERVER"`
+	ServiceName      string `env:"SERVICE_NAME"`
+	//Host_port   string  `env:"HOST_PORT"`
 }
 
 func LoadConfig() Config {
@@ -22,4 +27,9 @@ func LoadConfig() Config {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
 	return cfg
+}
+
+type AppConfig interface {
+	GetConfig() Config
+	GetLogger() *ServiceLogger
 }
