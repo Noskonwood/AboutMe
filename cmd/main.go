@@ -1,7 +1,10 @@
 package main
 
 import (
+	"git.foxminded.ua/foxstudent104181/telegrambot/config"
 	"git.foxminded.ua/foxstudent104181/telegrambot/logger"
+
+	//"git.foxminded.ua/foxstudent104181/telegrambot/logger"
 	"github.com/sirupsen/logrus"
 	"log"
 	"strings"
@@ -11,12 +14,11 @@ import (
 )
 
 func main() {
-	logger.Init()
+	config.NewBotInfastructureConfig()
+	logger.NewBotInfrastructureLogger("")
 
-	cfg := logger.LoadConfig()
-	telegramBotToken := cfg.TelegramBotToken
-
-	bot, err := tgbotapi.NewBotAPI(telegramBotToken)
+	botConfig := config.NewBotInfastructureConfig()
+	bot, err := tgbotapi.NewBotAPI(botConfig.TelegramBotToken)
 	if err != nil {
 		log.Fatalf("Error to connect to bot: %v", err)
 	}
