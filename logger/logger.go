@@ -1,10 +1,9 @@
 package logger
 
 import (
-	"git.foxminded.ua/foxstudent104181/telegrambot/config"
-	"github.com/sirupsen/logrus"
 	"go.uber.org/zap"
 	"log"
+	"os"
 )
 
 const (
@@ -16,18 +15,7 @@ func NewBotInfrastructureLogger(string) (*zap.SugaredLogger, error) {
 	var l *zap.Logger
 	var err error
 
-	cfg := config.NewBotInfastructureConfig()
-
-	// Use the configuration variables to create a logger
-	logger, err := NewBotInfrastructureLogger(cfg.LogLevel)
-	if err != nil {
-		logrus.Fatalf("Failed to create logger: %v", err)
-	}
-
-	// Use the logger
-	logger.Info("This is an example log message.")
-
-	switch cfg.LogLevel {
+	switch os.Getenv("LOG_LEVEL") {
 	case productionLevel:
 		l, err = zap.NewProduction()
 		if err != nil {

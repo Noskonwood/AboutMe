@@ -1,6 +1,1 @@
-{"chat_id":383528280,"level":"info","msg":"Received message: /start","time":"2023-02-22T16:09:39-06:00","user_id":383528280,"username":"BogdanPetrukhin"}
-{"chat_id":383528280,"level":"info","msg":"Message sent","time":"2023-02-22T16:09:39-06:00","user_id":383528280,"username":"BogdanPetrukhin"}
-{"chat_id":383528280,"level":"info","msg":"Received message: /about","time":"2023-02-22T16:09:41-06:00","user_id":383528280,"username":"BogdanPetrukhin"}
-{"chat_id":383528280,"level":"info","msg":"Message sent","time":"2023-02-22T16:09:42-06:00","user_id":383528280,"username":"BogdanPetrukhin"}
-{"chat_id":383528280,"level":"info","msg":"Received message: about","time":"2023-02-22T16:09:43-06:00","user_id":383528280,"username":"BogdanPetrukhin"}
-{"chat_id":383528280,"level":"warning","msg":"Received unknown command: %sabout","time":"2023-02-22T16:09:43-06:00","user_id":383528280,"username":"BogdanPetrukhin"}
+

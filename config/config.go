@@ -1,47 +1,36 @@
 package config
 
 import (
-	"github.com/caarlos0/env/v7"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
-	_ "os"
 )
 
-type BotInfastructureConfig struct {
-	TelegramBotToken string `env:"API_KEY,required"`
-	LogLevel         string `env:"LOG_LEVEL"`
-	LogServer        string `env:"LOG_SERVER"`
-	ServiceName      string `env:"SERVICE_NAME"`
-	LogOutput        string `env:"LOG_OUTPUT_FILE"`
-	//Host_port   string  `env:"HOST_PORT"`
+type BotConfig struct {
+	APIKey        string
+	LogLevel      string
+	LogOutputFile string
+	LogServer     string
+	ServiceName   string
 }
 
-func NewBotInfastructureConfig() BotInfastructureConfig {
-	var botInfastructureConfig BotInfastructureConfig
+func NewBotInfastructureConfig() *BotConfig {
 
-	err := env.Parse(&botInfastructureConfig)
-	if err != nil {
-		return botInfastructureConfig
-	}
+	// Create a new instance of the BotConfig struct
+	config := &BotConfig{}
 
-	loadFile := godotenv.Load()
+	// Load environment variables from .env file
+	loadFile := godotenv.Load("config/.env")
 	if loadFile != nil {
-		log.Fatalf("Error loading .env file: %s", err)
+		log.Fatalf("Error loading .env file: %s", loadFile.Error())
 	}
 
-	// Parse environment variables into config struct
-	botInfastructureConfig.TelegramBotToken = os.Getenv("API_KEY")
-	botInfastructureConfig.LogLevel = os.Getenv("LOG_LEVEL")
-	botInfastructureConfig.LogServer = os.Getenv("LOG_SERVER")
-	botInfastructureConfig.ServiceName = os.Getenv("SERVICE_NAME")
-	botInfastructureConfig.LogOutput = os.Getenv("LOG_OUTPUT_FILE")
+	// Populate the configuration settings
+	config.APIKey = os.Getenv("API_KEY")
+	config.LogLevel = os.Getenv("LOG_LEVEL")
+	config.LogOutputFile = os.Getenv("LOG_OUTPUT_FILE")
+	config.LogServer = os.Getenv("LOG_SERVER")
+	config.ServiceName = os.Getenv("SERVICE_NAME")
 
-	// Validate required fields
-	if botInfastructureConfig.TelegramBotToken == "" {
-		log.Fatalf("missing required field: API_KEY - %v", err)
-
-	}
-
-	return botInfastructureConfig
+	return config
 }
