@@ -1,9 +1,9 @@
 package logger
 
 import (
+	"git.foxminded.ua/foxstudent104181/telegrambot/config"
 	"go.uber.org/zap"
 	"log"
-	"os"
 )
 
 const (
@@ -15,7 +15,7 @@ func NewBotInfrastructureLogger(string) (*zap.SugaredLogger, error) {
 	var l *zap.Logger
 	var err error
 
-	switch os.Getenv("LOG_LEVEL") {
+	switch config.NewBotInfastructureConfig().LogLevel {
 	case productionLevel:
 		l, err = zap.NewProduction()
 		if err != nil {
